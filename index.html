@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Денису 43!</title>
+    <title>HB Денис!</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
@@ -242,7 +242,7 @@
     <section id="hero" class="section">
         <h2 class="text-sm tracking-[0.3em] uppercase mb-4 opacity-40">Спеціально для</h2>
         <div id="gyroContainer">
-            <h1 class="gyro-text glitch" id="nameText">ДЕНИС</h1>
+            <h1 class="gyro-text glitch" id="nameText">ДЕНИСА!</h1>
         </div>
         <div class="swipe-hint" onclick="requestGyro()">
             <p class="text-[10px] uppercase tracking-widest">Свайпни вгору</p>
@@ -255,7 +255,7 @@
         </div>
         <div class="glass">
             <h2 class="text-2xl font-bold">З Днем Народження!</h2>
-            <p class="mt-4 opacity-70">Новий рік — нові можливості.</p>
+            <p class="mt-4 opacity-70">Новий рік > нові можливості.</p>
         </div>
     </section>
 
@@ -287,7 +287,6 @@
         <div class="text-center p-6">
             <h2 class="text-4xl font-black mb-4">43 — це вогонь</h2>
             <p class="opacity-60 mb-8">Почнемо все з початку в наступному році?</p>
-            <button onclick="location.reload()" class="btn-restart">Повторити</button>
         </div>
     </section>
 
@@ -305,7 +304,6 @@
         let congratsAnimated = false;
         const nameText = document.getElementById('nameText');
 
-        // Переходы
         document.addEventListener('touchstart', e => { startY = e.touches[0].clientY; });
         document.addEventListener('touchend', e => {
             let endY = e.changedTouches[0].clientY;
@@ -338,7 +336,6 @@
             if (currentStage === 1 && !congratsAnimated) {
                 congratsAnimated = true;
                 
-                // Задержка перед хлопушкой
                 setTimeout(() => {
                     const count = 50;
                     const defaults = { origin: { y: 0.95 }, zIndex: 1000 };
@@ -351,16 +348,13 @@
                         });
                     }
 
-                    // Хлопушки из левого нижнего угла
                     fire(0.25, { spread: 40, startVelocity: 60, origin: { x: 0.05, y: 0.95 }, angle: 60 });
                     fire(0.2, { spread: 50, startVelocity: 50, origin: { x: 0.05, y: 0.95 }, angle: 70 });
                     
-                    // Хлопушки из правого нижнего угла
                     fire(0.25, { spread: 40, startVelocity: 60, origin: { x: 0.95, y: 0.95 }, angle: 120 });
                     fire(0.2, { spread: 50, startVelocity: 50, origin: { x: 0.95, y: 0.95 }, angle: 110 });
                 }, 500);
 
-                // Анимация цифры
                 const digit = document.getElementById('digit');
                 digit.classList.remove('digit-change');
                 void digit.offsetWidth; 
@@ -373,7 +367,6 @@
             }
         }
 
-        // Гироскоп
         let gyroEnabled = false;
         
         function handleOrientation(event) {
@@ -409,11 +402,9 @@
             }
         }
         
-        // Авто-запрос при первом взаимодействии
         document.body.addEventListener('click', requestGyro, { once: true });
         document.body.addEventListener('touchstart', requestGyro, { once: true });
 
-        // Эффект сердца
         function startHeartEffect() {
             const canvas = document.getElementById('heartCanvas');
             const ctx = canvas.getContext('2d');
