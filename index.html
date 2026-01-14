@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Денис 43 | iPhone 15 Pro Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;500;900&family=Montserrat:wght@900&display=swap');
+
+        :root {
+            --titanium: #8e8d8a;
+            --black-titanium: #1c1c1e;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'SF Pro Display', -apple-system, sans-serif;
+            background-color: #000;
+            color: #f5f5f7;
+            touch-action: none;
+        }
+
+        .section {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+            background: #000;
+            padding: env(safe-area-inset-top) 20px env(safe-area-inset-bottom);
+        }
+
+        /* Glitch & Gyro Text */
+        .glitch-container {
+            perspective: 1000px;
+            will-change: transform;
+        }
+
+        .glitch-name {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            position: relative;
+            display: inline-block;
+            color: #fff;
+            transition: transform 0.05s linear;
+            will-change: transform;
+        }
+
+        .glitch-name::before, .glitch-name::after {
+            content: 'ДЕНИС';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+        }
+
+        .glitch-name::before {
+            left: 2px;
+            text-shadow: -2px 0 #ff00c1;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim 5s infinite linear alternate-reverse;
+        }
+
+        .glitch-name::after {
+            left: -2px;
+            text-shadow: -2px 0 #00fff9, 2px 2px #ff00c1;
+            clip: rect(100px, 450px, 120px, 0);
+            animation: glitch-anim2 1s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim {
+            0% { clip: rect(31px, 9999px, 94px, 0); }
+            20% { clip: rect(62px, 9999px, 42px, 0); }
+            40% { clip: rect(15px, 9999px, 28px, 0); }
+            60% { clip: rect(80px, 9999px, 63px, 0); }
+            80% { clip: rect(11px, 9999px, 91px, 0); }
+            100% { clip: rect(55px, 9999px, 14px, 0); }
+        }
+
+        @keyframes glitch-anim2 {
+            0% { clip: rect(65px, 9999px, 100px, 0); }
+            100% { clip: rect(10px, 9999px, 40px, 0); }
+        }
+
+        /* Number Animation */
+        .age-number {
+            font-size: 9rem;
+            font-weight: 900;
+            background: linear-gradient(180deg, #fff 30%, #444 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .digit-flip {
+            display: inline-block;
+            position: relative;
+        }
+
+        .flip-active {
+            animation: flipOut 0.8s forwards ease-in;
+        }
+
+        @keyframes flipOut {
+            0% { transform: rotateX(0); opacity: 1; }
+            100% { transform: rotateX(-90deg); opacity: 0; }
+        }
+
+        /* iPhone 15 Pro Glass Card */
+        .iphone-card {
+            background: rgba(28, 28, 30, 0.6);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 36px;
+            padding: 40px 24px;
+            width: 100%;
+            max-width: 340px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100% !important;
+            height: 100% !important;
+            z-index: 1;
+        }
+
+        .swipe-bar {
+            position: absolute;
+            bottom: 12px;
+            width: 140px;
+            height: 5px;
+            background: #fff;
+            border-radius: 10px;
+            opacity: 0.3;
+        }
+
+        .final-card {
+            max-height: 80vh;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .final-card::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .final-card::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+        }
+
+        .final-card::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <section id="hero" class="section">
+        <div class="glitch-container" id="gyroBox">
+            <h1 class="glitch-name" id="nameTag">ДЕНИС</h1>
+        </div>
+        <div class="mt-12 text-center">
+            <p class="text-[10px] tracking-[0.5em] uppercase opacity-40 mb-2">Натисни щоб почати</p>
+            <div class="w-1 h-12 bg-gradient-to-b from-white to-transparent mx-auto opacity-20"></div>
+        </div>
+        <div class="swipe-bar"></div>
+    </section>
+
+    <section id="congrats" class="section" style="transform: translateY(100%);">
+        <div class="age-number">
+            <span>4</span><span id="digit" class="digit-flip">2</span>
+        </div>
+        <div class="iphone-card">
+            <h2 class="text-3xl font-bold mb-4 tracking-tight">43 роки.</h2>
+            <p class="text-sm leading-relaxed opacity-60">Це вік, коли досвід стає силою, а мрії перетворюються на цілі. З твоїм днем!</p>
+        </div>
+        <div class="swipe-bar"></div>
+    </section>
+
+    <section id="heart-section" class="section" style="transform: translateY(100%);">
+        <canvas id="heartCanvas"></canvas>
+        <div class="relative z-10 text-center">
+            <h2 class="text-2xl font-light tracking-[0.3em] uppercase">Живи серцем</h2>
+        </div>
+        <div class="swipe-bar"></div>
+    </section>
+
+    <section id="wishes" class="section" style="transform: translateY(100%);">
+        <div class="iphone-card text-left">
+            <h2 class="text-2xl font-bold mb-8">План на рік:</h2>
+            <div class="space-y-6">
+                <div class="flex items-center gap-4">
+                    <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-xs">01</div>
+                    <p class="text-sm font-medium">Бути першим у всьому</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-xs">02</div>
+                    <p class="text-sm font-medium">Відкривати нові світи</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-xs">03</div>
+                    <p class="text-sm font-medium">Створювати легендарне</p>
+                </div>
+            </div>
+        </div>
+        <div class="swipe-bar"></div>
+    </section>
+
+    <section id="restart" class="section" style="transform: translateY(100%);">
+        <div class="iphone-card final-card text-left">
+            <h1 class="text-4xl font-black mb-6 tracking-tight">Денисе, з Днем Народження!</h1>
+            
+            <div class="space-y-6 text-sm leading-relaxed opacity-80">
+                <p>43 роки — це не просто цифра. Це твій шлях, твої перемоги, твоя сила. Це все, що ти створив, все, чого досягнув, і все, що ще попереду.</p>
+                
+                <p>Нехай цей рік принесе тобі нові виклики, які ти подолаєш з легкістю. Нехай кожен день буде наповнений сенсом, а кожна мить — цінною.</p>
+                
+                <p>Бажаю тобі міцного здоров'я, безмежної енергії та незламного духу. Нехай поруч завжди будуть ті, хто підтримує і надихає. Нехай мрії стають реальністю, а цілі — досягнутими.</p>
+                
+                <p>Живи на повну, твори історію, залишай слід. Ти заслуговуєш на найкраще!</p>
+                
+                <div class="mt-8 pt-6 border-t border-white/10 text-center">
+                    <p class="text-xs opacity-40 mb-4">Із щирими побажаннями</p>
+                    <p class="text-lg font-bold">🎉 З Днем Народження! 🎉</p>
+                </div>
+            </div>
+            
+            <button onclick="location.reload()" class="w-full mt-8 bg-white text-black px-10 py-4 rounded-full font-bold uppercase tracking-widest text-xs hover:scale-95 transition-transform">
+                Почати спочатку
+            </button>
+        </div>
+    </section>
+
+    <script>
+        let currentStage = 0;
+        const sections = [
+            document.getElementById('hero'), 
+            document.getElementById('congrats'), 
+            document.getElementById('heart-section'),
+            document.getElementById('wishes'),
+            document.getElementById('restart')
+        ];
+        let startY = 0;
+        let heartStarted = false;
+        let isTransitioning = false;
+
+        // Navigation
+        document.addEventListener('touchstart', e => { startY = e.touches[0].clientY; });
+        document.addEventListener('touchend', e => {
+            if (isTransitioning) return;
+            let endY = e.changedTouches[0].clientY;
+            let diff = startY - endY;
+            if (diff > 50) nextStage();
+            if (diff < -50) prevStage();
+        });
+
+        function nextStage() {
+            if (currentStage < sections.length - 1) {
+                isTransitioning = true;
+                currentStage++;
+                applyTransition();
+            }
+        }
+
+        function prevStage() {
+            if (currentStage > 0) {
+                isTransitioning = true;
+                currentStage--;
+                applyTransition();
+            }
+        }
+
+        function applyTransition() {
+            sections.forEach((s, i) => {
+                s.style.transform = `translateY(${(i - currentStage) * 100}%)`;
+            });
+            
+            // Конфетти запускаем сразу после начала перехода на слайд 1
+            if (currentStage === 1) {
+                setTimeout(() => {
+                    triggerBirthdayEffects();
+                }, 100);
+            }
+            
+            // Ждем завершения анимации перехода (0.9s), потом разрешаем следующий свайп
+            setTimeout(() => {
+                isTransitioning = false;
+                if (currentStage === 2) initHeart();
+            }, 900);
+        }
+
+        // Birthday Effects
+        function triggerBirthdayEffects() {
+            // Confetti снизу слева и справа
+            const duration = 1500;
+            const end = Date.now() + duration;
+            const colors = ['#ffffff', '#8e8d8a', '#1c1c1e'];
+
+            (function frame() {
+                confetti({
+                    particleCount: 4,
+                    angle: 60,
+                    spread: 70,
+                    origin: { x: 0, y: 1 },
+                    colors: colors,
+                    startVelocity: 45,
+                    gravity: 1.2,
+                    scalar: 1.2
+                });
+                confetti({
+                    particleCount: 4,
+                    angle: 120,
+                    spread: 70,
+                    origin: { x: 1, y: 1 },
+                    colors: colors,
+                    startVelocity: 45,
+                    gravity: 1.2,
+                    scalar: 1.2
+                });
+                if (Date.now() < end) requestAnimationFrame(frame);
+            }());
+
+            // Digit Flip
+            const digit = document.getElementById('digit');
+            if(digit.innerText === '2') {
+                digit.classList.add('flip-active');
+                setTimeout(() => {
+                    digit.innerText = '3';
+                    digit.classList.remove('flip-active');
+                    digit.style.opacity = '1';
+                    digit.style.transform = 'rotateX(0)';
+                }, 800);
+            }
+        }
+
+        // Strong Gyroscope Logic
+        const nameTag = document.getElementById('nameTag');
+
+        function handleMotion(e) {
+            if (currentStage !== 0) return;
+            
+            const ax = e.accelerationIncludingGravity.x || 0;
+            const ay = e.accelerationIncludingGravity.y || 0;
+            
+            // Сильное смещение
+            const moveX = ax * 15; 
+            const moveY = ay * 15;
+            const rotX = ay * 5;
+            const rotY = -ax * 5;
+
+            nameTag.style.transform = `translate3d(${-moveX}px, ${moveY}px, 0) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+        }
+
+        // Request permissions for iOS
+        document.body.addEventListener('click', () => {
+            if (typeof DeviceMotionEvent.requestPermission === 'function') {
+                DeviceMotionEvent.requestPermission()
+                    .then(state => {
+                        if (state === 'granted') {
+                            window.addEventListener('devicemotion', handleMotion);
+                        }
+                    });
+            } else {
+                window.addEventListener('devicemotion', handleMotion);
+            }
+        }, { once: true });
+
+        // Heart Particles
+        function initHeart() {
+            if (heartStarted) return;
+            heartStarted = true;
+            
+            const canvas = document.getElementById('heartCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const particles = [];
+            const count = 1500;
+
+            function getHeartPoint(t) {
+                return {
+                    x: 16 * Math.pow(Math.sin(t), 3),
+                    y: -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t))
+                };
+            }
+
+            for (let i = 0; i < count; i++) {
+                const t = Math.random() * Math.PI * 2;
+                const pos = getHeartPoint(t);
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    tx: canvas.width / 2 + pos.x * 12,
+                    ty: canvas.height / 2 + pos.y * 12,
+                    s: Math.random() * 2,
+                    a: 0.01 + Math.random() * 0.03
+                });
+            }
+
+            function draw() {
+                ctx.fillStyle = 'rgba(0,0,0,0.1)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => {
+                    p.x += (p.tx - p.x) * p.a;
+                    p.y += (p.ty - p.y) * p.a;
+                    ctx.fillStyle = '#fff';
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.s, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                if(currentStage === 2) requestAnimationFrame(draw);
+            }
+            draw();
+        }
+    </script>
+</body>
+</html>
