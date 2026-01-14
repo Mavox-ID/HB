@@ -2,244 +2,219 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>З Днем Народження, Денис!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Денису 43</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;800&display=swap" rel="stylesheet">
     <style>
-        /* --- CSS: Стилі та Анімації --- */
-        body, html {
+        :root {
+            --b: #000;
+            --g: #d4af37;
+            --w: #fff;
+            --t: cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body, html {
             width: 100%;
             height: 100%;
-            background-color: #000;
-            color: white;
-            font-family: 'Arial', sans-serif;
-            overflow: hidden; /* Ховаємо стандартний скрол */
+            overflow: hidden;
+            background: var(--b);
+            font-family: 'Inter', sans-serif;
+            color: var(--w);
+            touch-action: none;
         }
-
-        /* Контейнер для свайпів (ефект ТікТоку) */
-        .container {
-            height: 100vh;
-            overflow-y: scroll;
-            scroll-snap-type: y mandatory; /* Головна магія свайпу */
-            scroll-behavior: smooth;
-        }
-
-        section {
-            height: 100vh;
+        #s-container {
             width: 100%;
+            height: 100%;
+            transition: transform 0.8s var(--t);
+            will-change: transform;
+        }
+        section {
+            width: 100%;
+            height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            scroll-snap-align: start; /* Фіксація слайду */
-            position: relative;
             text-align: center;
-            padding: 20px;
-            box-sizing: border-box;
-            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            padding: env(safe-area-inset-top) 30px env(safe-area-inset-bottom);
+            position: relative;
         }
-
-        /* Градієнти для кожного слайду */
-        #slide1 { background: linear-gradient(45deg, #ff9a9e, #fad0c4); }
-        #slide2 { background: radial-gradient(circle, #2b32b2, #1488cc); }
-        #slide3 { background: #000; }
-
-        h1 { font-size: 3rem; margin: 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-        h2 { font-size: 5rem; margin: 10px 0; color: #f1c40f; }
-        p { font-size: 1.5rem; margin-top: 10px; opacity: 0.9; }
-
-        /* Анімація стрілочки */
-        .arrow {
-            position: absolute;
-            bottom: 30px;
-            font-size: 2rem;
-            animation: bounce 2s infinite;
+        h1 {
+            font-size: clamp(3rem, 15vw, 6rem);
+            font-weight: 800;
+            letter-spacing: -2px;
+            background: linear-gradient(180deg, var(--w) 0%, var(--g) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: 1s var(--t) 0.3s;
         }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-            40% {transform: translateY(-20px);}
-            60% {transform: translateY(-10px);}
+       .active h1 {
+            opacity: 1;
+            transform: translateY(0);
         }
-
-        /* Кнопка "Хлопушка" */
-        .boom-btn {
-            padding: 15px 30px;
+       .age-val {
+            font-size: clamp(6rem, 30vw, 12rem);
+            line-height: 1;
+            font-weight: 800;
+            margin: 20px 0;
+            text-shadow: 0 10px 50px rgba(212, 175, 55, 0.4);
+        }
+       .msg-p {
             font-size: 1.2rem;
-            background: #e74c3c;
-            border: none;
-            border-radius: 50px;
-            color: white;
-            cursor: pointer;
-            margin-top: 20px;
-            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
-            transition: transform 0.1s;
+            line-height: 1.6;
+            font-weight: 300;
+            max-width: 500px;
+            opacity: 0.8;
         }
-        .boom-btn:active { transform: scale(0.95); }
-
-        /* Канвас для сердечка та конфеті */
-        canvas {
+       .hint {
             position: absolute;
+            bottom: calc(40px + env(safe-area-inset-bottom));
+            font-size: 0.9rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            opacity: 0.4;
+            animation: h-anim 2s infinite;
+        }
+        @keyframes h-anim {
+            0%, 100% { transform: translateY(0); opacity: 0.2; }
+            50% { transform: translateY(-10px); opacity: 0.6; }
+        }
+        canvas {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none; /* Щоб не заважало клікати */
+            pointer-events: none;
+            z-index: 100;
         }
     </style>
 </head>
 <body>
-
-    <div class="container" id="mainContainer">
-        
-        <section id="slide1">
-            <h1>Привіт!</h1>
-            <p>Тут дещо особливе...</p>
-            <p>Свайпни вгору, щоб почати ☝️</p>
-            <div class="arrow">⬆️</div>
+    <div id="s-container">
+        <section class="active">
+            <h1>ДЕНИС</h1>
+            <div class="hint">Свайпни для початку</div>
         </section>
-
-        <section id="slide2">
-            <canvas id="confettiCanvas"></canvas>
-            <h1>З Днем Народження,<br>Денис!</h1>
-            <h2>43</h2>
-            <p>Роки — це лише досвід!</p>
-            <button class="boom-btn" onclick="fireConfetti()">Бабахнути! 🎉</button>
-            <div class="arrow">Ще вище ⬆️</div>
+        <section>
+            <div class="age-val">43</div>
+            <p class="msg-p">З ДНЕМ НАРОДЖЕННЯ</p>
         </section>
-
-        <section id="slide3">
-            <canvas id="heartCanvas"></canvas>
-            <h1 style="position: absolute; bottom: 20%; pointer-events: none;">Ми тебе любимо!</h1>
+        <section>
+            <p class="msg-p">
+                Нехай кожен день приносить енергію для великих звершень, а життєвий шлях буде сповнений впевненості та нових горизонтів. Твій досвід — це твоя сила.
+            </p>
         </section>
-
     </div>
+    <canvas id="c"></canvas>
 
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
-        /* --- JS: Логіка ефектів --- */
+        const container = document.getElementById('s-container');
+        const sections = document.querySelectorAll('section');
+        const canvas = document.getElementById('c');
+        const ctx = canvas.getContext('2d');
+        let current = 0;
+        let y0 = null;
+        let animId = null;
+        let heartParts =;
 
-        // 1. Ефект КОНФЕТІ (Хлопушка)
-        const confettiCanvas = document.getElementById('confettiCanvas');
-        const ctxConfetti = confettiCanvas.getContext('2d');
-        confettiCanvas.width = window.innerWidth;
-        confettiCanvas.height = window.innerHeight;
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
 
-        let particles = [];
-        const colors = ['#f1c40f', '#e74c3c', '#3498db', '#9b59b6', '#2ecc71'];
-
-        function fireConfetti() {
-            for (let i = 0; i < 100; i++) {
-                particles.push({
-                    x: window.innerWidth / 2,
-                    y: window.innerHeight / 2,
-                    w: Math.random() * 10 + 5,
-                    h: Math.random() * 10 + 5,
-                    dx: (Math.random() - 0.5) * 20,
-                    dy: (Math.random() - 0.5) * 20,
-                    color: colors[Math.floor(Math.random() * colors.length)],
-                    life: 100
-                });
+        window.addEventListener('touchstart', e => { y0 = e.touches.clientY; });
+        window.addEventListener('touchend', e => {
+            if (y0 === null) return;
+            let y1 = e.changedTouches.clientY;
+            let d = y0 - y1;
+            if (Math.abs(d) > 60) {
+                if (d > 0 && current < sections.length - 1) current++;
+                else if (d < 0 && current > 0) current--;
+                move();
             }
-        }
-
-        function updateConfetti() {
-            ctxConfetti.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
-            particles.forEach((p, index) => {
-                p.x += p.dx;
-                p.y += p.dy;
-                p.dy += 0.5; // гравітація
-                p.life--;
-                ctxConfetti.fillStyle = p.color;
-                ctxConfetti.fillRect(p.x, p.y, p.w, p.h);
-                if (p.life <= 0) particles.splice(index, 1);
-            });
-            requestAnimationFrame(updateConfetti);
-        }
-        updateConfetti();
-
-        // 2. Ефект ЧАСТИНКИ В СЕРЦЕ
-        const heartCanvas = document.getElementById('heartCanvas');
-        const ctxHeart = heartCanvas.getContext('2d');
-        let heartParticles = [];
-
-        function resizeHeart() {
-            heartCanvas.width = window.innerWidth;
-            heartCanvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeHeart);
-        resizeHeart();
-
-        // Формула серця
-        function getHeartPoint(t) {
-            const scale = Math.min(window.innerWidth, window.innerHeight) / 30; 
-            const x = 16 * Math.pow(Math.sin(t), 3);
-            const y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
-            return {
-                x: (window.innerWidth / 2) + (x * scale),
-                y: (window.innerHeight / 2) + (y * scale)
-            };
-        }
-
-        function initHeart() {
-            heartParticles = [];
-            for (let i = 0; i < Math.PI * 2; i += 0.05) {
-                let pos = getHeartPoint(i);
-                heartParticles.push({
-                    originX: pos.x,
-                    originY: pos.y,
-                    x: Math.random() * window.innerWidth,
-                    y: Math.random() * window.innerHeight,
-                    color: '#e74c3c',
-                    size: Math.random() * 3 + 1
-                });
-            }
-        }
-
-        // Запуск анімації серця, коли скролимо до 3-го слайду
-        const container = document.getElementById('mainContainer');
-        container.addEventListener('scroll', () => {
-            const slide3 = document.getElementById('slide3');
-            const rect = slide3.getBoundingClientRect();
-            // Якщо слайд 3 видно
-            if (rect.top >= -10 && rect.top <= 10) {
-                isHeartActive = true;
-            } else {
-                isHeartActive = false;
-                // розкидати частинки назад
-                heartParticles.forEach(p => {
-                    p.x += (Math.random() - 0.5) * 50; 
-                });
-            }
+            y0 = null;
         });
 
-        let isHeartActive = false;
-        initHeart();
-
-        function animateHeart() {
-            ctxHeart.fillStyle = 'rgba(0,0,0,0.1)'; // Шлейф
-            ctxHeart.fillRect(0, 0, heartCanvas.width, heartCanvas.height);
-
-            heartParticles.forEach(p => {
-                // Плавний рух до цілі (форми серця)
-                if (isHeartActive) {
-                    p.x += (p.originX - p.x) * 0.05;
-                    p.y += (p.originY - p.y) * 0.05;
-                } else {
-                     // Хаотичний рух
-                    p.x += (Math.random() - 0.5) * 2;
-                    p.y += (Math.random() - 0.5) * 2;
-                }
-
-                ctxHeart.fillStyle = p.color;
-                ctxHeart.beginPath();
-                ctxHeart.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                ctxHeart.fill();
-            });
-            requestAnimationFrame(animateHeart);
+        function move() {
+            container.style.transform = `translateY(-${current * 100}vh)`;
+            sections.forEach((s, i) => s.classList.toggle('active', i === current));
+            
+            if (current === 1) triggerBang();
+            if (current === 2) startHeart();
+            else stopHeart();
         }
-        animateHeart();
 
+        function triggerBang() {
+            const end = Date.now() + 2000;
+            const colors = ['#d4af37', '#ffffff', '#aa8a2e'];
+            (function frame() {
+                confetti({
+                    particleCount: 3,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0, y: 0.8 },
+                    colors: colors
+                });
+                confetti({
+                    particleCount: 3,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1, y: 0.8 },
+                    colors: colors
+                });
+                if (Date.now() < end) requestAnimationFrame(frame);
+            }());
+        }
+
+        function startHeart() {
+            heartParts =;
+            const count = 400;
+            for (let i = 0; i < count; i++) {
+                heartParts.push({
+                    t: (i / count) * Math.PI * 2,
+                    s: Math.random() * 2 + 1,
+                    v: Math.random() * 0.02 + 0.01,
+                    o: Math.random() * 5
+                });
+            }
+            loop();
+        }
+
+        function loop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+            const sc = Math.min(canvas.width, canvas.height) / 45;
+
+            heartParts.forEach(p => {
+                p.t += p.v;
+                const x = 16 * Math.pow(Math.sin(p.t), 3);
+                const y = -(13 * Math.cos(p.t) - 5 * Math.cos(2 * p.t) - 2 * Math.cos(3 * p.t) - Math.cos(4 * p.t));
+                ctx.fillStyle = `rgba(212, 175, 55, ${0.3 + Math.sin(Date.now() * 0.002 + p.o) * 0.3})`;
+                ctx.beginPath();
+                ctx.arc(cx + x * sc, cy + y * sc, p.s, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            animId = requestAnimationFrame(loop);
+        }
+
+        function stopHeart() {
+            cancelAnimationFrame(animId);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
     </script>
 </body>
 </html>
